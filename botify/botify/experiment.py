@@ -53,6 +53,7 @@ class Experiments:
     A static container for all the existing experiments.
     """
 
+    # TODO 4: Create 4-way TOP_POP A/B experiment
     AA = Experiment("AA", Split.HALF_HALF)
     STICKY_ARTIST = Experiment("STICKY_ARTIST", Split.HALF_HALF)
 
