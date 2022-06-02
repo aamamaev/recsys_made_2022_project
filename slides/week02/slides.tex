@@ -108,6 +108,18 @@
 
 \end{frame}
 
+\begin{frame}{}
+
+\begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=Миссия социальной сети]
+Helping users feel closer to their friends and family.
+\end{tcolorbox}
+
+\vfill
+
+Q: Какую метрику вы бы предложили измерять в A/B?
+
+\end{frame}
+
 \begin{frame}{Опрос пользователей}
 
 \begin{columns}
@@ -154,18 +166,6 @@
     \end{tcolorbox}
 \end{column}
 \end{columns}
-
-\end{frame}
-
-\begin{frame}{}
-
-\begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=Миссия социальной сети]
-Helping users feel closer to their friends and family.
-\end{tcolorbox}
-
-\vfill
-
-Q: Какую метрику вы бы предложили измерять в A/B?
 
 \end{frame}
 
@@ -477,9 +477,9 @@ With 1\% precision loss, percentage of rec. long-tail items increases from 16 to
 \end{frame}
 
 \begin{frame}
-Maximal Marginal Relevence \cite{CARBONELL}
+Maximal Marginal Relevance \cite{CARBONELL}
 \[
-MMR = \max_j \left[ \lambda \, similarity(j, U) + (1 - \lambda) \max_{k < j} similarity(k, j) \right]
+MMR = \max_j \left[ \lambda \, similarity(j, U) - (1 - \lambda) \max_{k < j} similarity(k, j) \right]
 \]
 \end{frame}
 
