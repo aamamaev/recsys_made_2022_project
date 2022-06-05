@@ -29,7 +29,7 @@ artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
 data_logger = DataLogger(app)
 
 # TODO 2: Upload top tracks to catalog
-catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
+catalog = Catalog(app).load(app.config["TRACKS_CATALOG"], app.config["TOP_TRACKS_CATALOG"])
 catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
 
@@ -62,9 +62,13 @@ class NextTrack(Resource):
         args = parser.parse_args()
 
         # TODO 5: Wire TOP_POP experiment
-        treatment = Experiments.STICKY_ARTIST.assign(user)
+        treatment = Experiments.TOP_POP.assign(user)
         if treatment == Treatment.T1:
-            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
+            recommender = TopPop(tracks_redis.connection, catalog.top_tracks[:10])
+        elif treatment == Treatment.T2:
+            recommender = TopPop(tracks_redis.connection, catalog.top_tracks[:100])
+        elif treatment == Treatment.T3:
+            recommender = TopPop(tracks_redis.connection, catalog.top_tracks[:1000])
         else:
             recommender = Random(tracks_redis.connection)
 
