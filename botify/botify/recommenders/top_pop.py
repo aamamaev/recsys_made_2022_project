@@ -9,7 +9,6 @@ class TopPop(Recommender):
         self.random = Random(tracks_redis)
         self.top_tracks = top_tracks
 
-    # TODO 3: Implement TopPop recommender
     def recommend_next(self, user: int, prev_track: int, prev_track_time: float) -> int:
         if self.top_tracks:
             shuffled = list(self.top_tracks)

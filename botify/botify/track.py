@@ -22,7 +22,6 @@ class Catalog:
         self.tracks = []
         self.top_tracks = []
 
-    # TODO 1: Implement uploading top tracks to catalog
     def load(self, catalog_path, top_tracks_path):
         self.app.logger.info(f"Loading tracks from {catalog_path}")
         with open(catalog_path) as catalog_file:

@@ -15,7 +15,9 @@ gym==0.20.0
 idna==3.2
 importlib-metadata==4.8.1
 itsdangerous==2.0.1
+ipykernel
 Jinja2==3.0.1
+lightfm==1.16
 MarkupSafe==2.0.1
 marshmallow==3.13.0
 marshmallow-dataclass==8.5.3

@@ -22,13 +22,12 @@ app = Flask(__name__)
 app.config.from_file("config.json", load=json.load)
 api = Api(app)
 
+# TODO 1: Create Redis DB and implement uploading recommendations
 tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
 artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
 
-
 data_logger = DataLogger(app)
 
-# TODO 2: Upload top tracks to catalog
 catalog = Catalog(app).load(app.config["TRACKS_CATALOG"], app.config["TOP_TRACKS_CATALOG"])
 catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
@@ -61,7 +60,7 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        # TODO 5: Wire TOP_POP experiment
+        # TODO 4: Wire COLLABORATIVE experiment
         treatment = Experiments.TOP_POP.assign(user)
         if treatment == Treatment.T1:
             recommender = TopPop(tracks_redis.connection, catalog.top_tracks[:10])
