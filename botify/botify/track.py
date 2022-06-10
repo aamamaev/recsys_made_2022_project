@@ -52,6 +52,17 @@ class Catalog:
             redis.set(artist, self.to_bytes(artist_tracks))
         self.app.logger.info(f"Uploaded {j + 1} artists")
 
+    def upload_recommendations(self, redis):
+        self.app.logger.info(f"Uploading recommendations to redis")
+        recommendations_file_path = self.app.config["RECOMMENDATIONS_FILE_PATH"]
+        with open(recommendations_file_path) as recommendations_file:
+            for j, line in enumerate(recommendations_file):
+                recommendations = json.loads(line)
+                redis.set(
+                    recommendations["user"], self.to_bytes(recommendations["tracks"])
+                )
+        self.app.logger.info(f"Uploaded recommendations for {j + 1} users")
+
     def to_bytes(self, instance):
         return pickle.dumps(instance)
 
