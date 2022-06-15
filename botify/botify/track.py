@@ -1,7 +1,8 @@
 import itertools
 import json
 import pickle
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import List
 
 
 @dataclass
@@ -9,6 +10,9 @@ class Track:
     track: int
     artist: str
     title: str
+    recommendations: List[int] = field(default=lambda: [])
+
+# TODO 1: Configure uploading recommendations
 
 
 class Catalog:

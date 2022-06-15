@@ -53,7 +53,7 @@ class Experiments:
     A static container for all the existing experiments.
     """
 
-    # TODO 3: Create COLLABORATIVE A/B experiment
+    # TODO 3: Create RECOMMENDERS A/B experiment
     AA = Experiment("AA", Split.HALF_HALF)
     STICKY_ARTIST = Experiment("STICKY_ARTIST", Split.HALF_HALF)
     TOP_POP = Experiment("TOP_POP", Split.FOUR_WAY)

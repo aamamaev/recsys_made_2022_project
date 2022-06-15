@@ -23,7 +23,6 @@ app = Flask(__name__)
 app.config.from_file("config.json", load=json.load)
 api = Api(app)
 
-# TODO 1: Create Redis DB and implement uploading recommendations
 tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
 artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
 recommendations_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS")
@@ -63,7 +62,7 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        # TODO 4: Wire COLLABORATIVE experiment
+        # TODO 4: Wire five-way RECOMMENDERS experiment
         treatment = Experiments.COLLABORATIVE.assign(user)
         if treatment == Treatment.T1:
             recommender = Collaborative(recommendations_redis.connection, tracks_redis.connection, catalog)
