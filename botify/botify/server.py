@@ -13,6 +13,7 @@ from botify.experiment import Experiments, Treatment
 from botify.recommenders.random import Random
 from botify.recommenders.sticky_artist import StickyArtist
 from botify.recommenders.top_pop import TopPop
+from botify.recommenders.contextual import Contextual
 from botify.recommenders.collaborative import Collaborative
 from botify.track import Catalog
 
@@ -62,10 +63,15 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        # TODO 4: Wire five-way RECOMMENDERS experiment
-        treatment = Experiments.COLLABORATIVE.assign(user)
+        treatment = Experiments.RECOMMENDERS.assign(user)
         if treatment == Treatment.T1:
             recommender = Collaborative(recommendations_redis.connection, tracks_redis.connection, catalog)
+        elif treatment == Treatment.T2:
+            recommender = Contextual(tracks_redis.connection, catalog)
+        elif treatment == Treatment.T3:
+            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
+        elif treatment == Treatment.T4:
+            recommender = TopPop(recommendations_redis.connection, catalog.top_tracks[:100])
         else:
             recommender = Random(tracks_redis.connection)
 

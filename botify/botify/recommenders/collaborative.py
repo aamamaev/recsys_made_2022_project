@@ -3,7 +3,6 @@ from .random import Random
 from .recommender import Recommender
 
 
-# TODO 2: Implement Collaborative recommender
 class Collaborative(Recommender):
     def __init__(self, recommendations_redis, track_redis, catalog):
         self.recommendations_redis = recommendations_redis
