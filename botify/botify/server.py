@@ -10,11 +10,8 @@ from flask_restful import Resource, Api, abort, reqparse
 
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
-from botify.recommenders.random import Random
-from botify.recommenders.sticky_artist import StickyArtist
-from botify.recommenders.top_pop import TopPop
 from botify.recommenders.contextual import Contextual
-from botify.recommenders.collaborative import Collaborative
+from botify.recommenders.blacklist_recommender import BlacklistRecommender
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -34,6 +31,11 @@ catalog = Catalog(app).load(app.config["TRACKS_CATALOG"], app.config["TOP_TRACKS
 catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
 catalog.upload_recommendations(recommendations_redis.connection)
+
+catalog_b = Catalog(app).load(app.config["TRACKS_CATALOG_B"], app.config["TOP_TRACKS_CATALOG"])
+catalog_b.upload_tracks(tracks_redis.connection)
+catalog_b.upload_artists(artists_redis.connection)
+catalog_b.upload_recommendations(recommendations_redis.connection)
 
 parser = reqparse.RequestParser()
 parser.add_argument("track", type=int, location="json", required=True)
@@ -60,20 +62,20 @@ class Track(Resource):
 class NextTrack(Resource):
     def post(self, user: int):
         start = time.time()
-
         args = parser.parse_args()
 
         treatment = Experiments.RECOMMENDERS.assign(user)
         if treatment == Treatment.T1:
-            recommender = Collaborative(recommendations_redis.connection, tracks_redis.connection, catalog)
-        elif treatment == Treatment.T2:
-            recommender = Contextual(tracks_redis.connection, catalog)
-        elif treatment == Treatment.T3:
-            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
-        elif treatment == Treatment.T4:
-            recommender = TopPop(recommendations_redis.connection, catalog.top_tracks[:100])
+            recommender = BlacklistRecommender(
+                tracks_redis.connection,
+                recommendations_redis.connection,
+                catalog_b,
+                artists_timeout=1,
+                tracks_timeout=30,
+                time_threshold=0.7,
+            )
         else:
-            recommender = Random(tracks_redis.connection)
+            recommender = Contextual(tracks_redis.connection, catalog)
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 

@@ -54,10 +54,7 @@ class Experiments:
     """
 
     AA = Experiment("AA", Split.HALF_HALF)
-    STICKY_ARTIST = Experiment("STICKY_ARTIST", Split.HALF_HALF)
-    TOP_POP = Experiment("TOP_POP", Split.FOUR_WAY)
-    COLLABORATIVE = Experiment("COLLABORATIVE", Split.HALF_HALF)
-    RECOMMENDERS = Experiment("RECOMMENDERS", Split.FIVE_WAY)
+    RECOMMENDERS = Experiment("RECOMMENDERS", Split.HALF_HALF)
 
     def __init__(self):
         self.experiments = [Experiments.AA, Experiments.RECOMMENDERS]
